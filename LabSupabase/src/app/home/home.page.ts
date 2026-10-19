@@ -219,8 +219,8 @@ export class HomePage implements OnInit {
   async performLogout() {
     await this.supabaseService.logout();
     this.resetForm();
-    this.clients = [];
-    this.showToast('Sesión cerrada correctamente');
+    await this.loadClients();
+    this.showToast('Sesión cerrada: Modo solo lectura');
   }
 
   toggleTheme() {
