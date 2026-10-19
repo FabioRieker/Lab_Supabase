@@ -1,0 +1,181 @@
+.page-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 0.5rem;
+}
+
+/* Header bar */
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle-btn {
+  --color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: rotate(20deg);
+}
+
+.nav-link-btn {
+  --border-radius: 20px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 0.9rem;
+}
+
+/* User pill in header */
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(125, 125, 125, 0.12);
+  border: 1px solid var(--card-border);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Auth banner */
+.auth-hero-banner {
+  background: var(--hero-gradient);
+  border: 1px dashed rgba(99, 102, 241, 0.4);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .banner-text {
+    h4 {
+      margin: 0 0 4px 0;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--ion-color-step-600, #64748b);
+    }
+  }
+}
+
+/* Form card styling */
+.form-card {
+  margin-bottom: 1.5rem;
+
+  ion-card-header {
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 0.75rem;
+  }
+
+  ion-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.custom-input-item {
+  --background: transparent;
+  --border-color: var(--card-border);
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}
+
+/* Section Header */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem 0.5rem 0.75rem 0.5rem;
+
+  h3 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* Client List Item */
+.client-item {
+  --background: transparent;
+  --border-color: var(--card-border);
+  padding: 4px 0;
+
+  .client-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .client-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: var(--ion-color-step-600, #64748b);
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+}
+
+/* Modal styling */
+.login-modal-content {
+  padding: 1.5rem;
+  max-width: 420px;
+  margin: 0 auto;
+
+  .modal-title-box {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    ion-icon {
+      font-size: 3rem;
+      color: var(--ion-color-primary);
+    }
+
+    h2 {
+      margin: 8px 0 4px 0;
+      font-weight: 800;
+    }
+
+    p {
+      margin: 0;
+      color: var(--ion-color-step-600, #64748b);
+      font-size: 0.9rem;
+    }
+  }
+
+  .login-error-alert {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}

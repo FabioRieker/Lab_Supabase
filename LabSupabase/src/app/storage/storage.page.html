@@ -1,0 +1,211 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="transparent">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home" fill="clear" color="primary" class="nav-link-btn">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Volver a Clientes
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.3rem;">🖼️</span>
+        <strong>Storage Bucket</strong>
+        <span style="font-size: 0.8rem; opacity: 0.6; font-weight: normal;">Galería de Imágenes</span>
+      </div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <!-- Toggle Modo Claro / Oscuro -->
+      <ion-button (click)="toggleTheme()" class="theme-toggle-btn" [title]="isDark() ? 'Modo Claro' : 'Modo Oscuro'">
+        <ion-icon slot="icon-only" [name]="isDark() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+      </ion-button>
+
+      <!-- Usuario actual -->
+      @if (currentUser()) {
+        <div class="user-pill ion-hide-sm-down">
+          <span>{{ currentUser()?.email }}</span>
+          <span class="role-badge" [ngClass]="isAdmin() === 'admin' ? 'admin' : 'user'">
+            {{ isAdmin() || 'user' }}
+          </span>
+        </div>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="page-wrapper">
+
+    <!-- BARRA DE CONTROL DEL BUCKET -->
+    <ion-card class="premium-card control-bar-card">
+      <div class="control-row">
+        <div class="bucket-input-wrapper">
+          <ion-icon name="folder-open-outline" color="primary" style="font-size: 1.4rem;"></ion-icon>
+          <ion-input
+            type="text"
+            label="Bucket:"
+            labelPlacement="floating"
+            [(ngModel)]="bucketName"
+            placeholder="images"
+            style="--padding-top: 4px; --padding-bottom: 4px;">
+          </ion-input>
+
+          <ion-button fill="outline" color="primary" (click)="loadImages()" [disabled]="isLoading" size="small">
+            <ion-icon slot="start" name="refresh-outline"></ion-icon>
+            Recargar
+          </ion-button>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <!-- Input oculto para subir imágenes -->
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            style="display: none;"
+            (change)="onFileSelected($event)" />
+
+          <ion-button (click)="fileInput.click()" color="primary" [disabled]="isUploading" shape="round">
+            <ion-icon slot="start" [name]="isUploading ? 'refresh-outline' : 'cloud-upload-outline'"></ion-icon>
+            {{ isUploading ? 'Subiendo...' : 'Subir Imagen' }}
+          </ion-button>
+        </div>
+      </div>
+    </ion-card>
+
+    <!-- CABECERA DE SECCIÓN -->
+    <div class="section-header">
+      <h3>
+        <ion-icon name="images-outline" color="primary"></ion-icon>
+        Imágenes en "{{ bucketName }}"
+      </h3>
+      <ion-badge color="medium" style="border-radius: 9999px;">
+        {{ images.length }} {{ images.length === 1 ? 'imagen' : 'imágenes' }}
+      </ion-badge>
+    </div>
+
+    <!-- SPINNER DE CARGA -->
+    @if (isLoading) {
+      <div style="text-align: center; padding: 3rem 0;">
+        <ion-spinner name="crescent" color="primary" style="transform: scale(1.5);"></ion-spinner>
+        <p style="margin-top: 1rem; color: var(--ion-color-step-600);">Cargando imágenes del Storage...</p>
+      </div>
+    }
+
+    <!-- GRID DE CARDS DE IMÁGENES -->
+    @if (!isLoading && images.length > 0) {
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          @for (img of images; track img.name) {
+            <ion-col size="12" size-sm="6" size-md="4" size-lg="3" style="padding: 8px;">
+              <ion-card class="premium-card image-card">
+                <!-- Preview con efecto hover -->
+                <div class="image-wrapper" (click)="openPreview(img)" title="Ver a tamaño completo">
+                  <img [src]="img.url" [alt]="img.name" loading="lazy" />
+                  <div class="image-overlay">
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                </div>
+
+                <ion-card-content>
+                  <div>
+                    <h4 class="image-title" [title]="img.name">{{ img.name }}</h4>
+                    <div class="image-meta">
+                      <span>📦 {{ formatBytes(img.size) }}</span>
+                      <span>📅 {{ formatDate(img.createdAt) }}</span>
+                    </div>
+                  </div>
+
+                  <div class="card-actions">
+                    <ion-button fill="clear" size="small" color="primary" (click)="openPreview(img)" title="Ver">
+                      <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+                    </ion-button>
+
+                    <a [href]="img.url" target="_blank" download class="ion-activatable" style="text-decoration: none;">
+                      <ion-button fill="clear" size="small" color="medium" title="Descargar / Abrir URL">
+                        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+                      </ion-button>
+                    </a>
+
+                    <ion-button fill="clear" size="small" color="danger" (click)="deleteImage(img)" title="Eliminar del Storage">
+                      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                    </ion-button>
+                  </div>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          }
+        </ion-row>
+      </ion-grid>
+    }
+
+    <!-- ESTADO VACÍO O BUCKET PENDIENTE -->
+    @if (!isLoading && images.length === 0) {
+      <ion-card class="premium-card empty-state-card">
+        <ion-icon name="image-outline" class="empty-icon"></ion-icon>
+        <h3>No hay imágenes disponibles en el bucket "{{ bucketName }}"</h3>
+        <p>
+          Puedes subir una imagen haciendo clic en el botón inferior, o si aún no has creado el bucket en Supabase, créalo desde el panel de Supabase.
+        </p>
+
+        @if (errorMessage) {
+          <div class="sql-hint-box">
+            <strong style="color: #ef4444;">⚠️ Mensaje de Supabase:</strong> {{ errorMessage }}
+            <br><br>
+            <strong>💡 Consejo:</strong> En tu panel de Supabase ve a <em>Storage</em> &gt; <em>New bucket</em>, llámalo <code>images</code> y márcalo como <strong>Public bucket</strong>.
+          </div>
+        }
+
+        <ion-button (click)="fileInput.click()" color="primary" shape="round">
+          <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+          Subir mi primera imagen
+        </ion-button>
+      </ion-card>
+    }
+
+  </div>
+
+  <!-- MODAL DE VISUALIZACIÓN A TAMAÑO COMPLETO -->
+  <ion-modal [isOpen]="isPreviewOpen" (didDismiss)="closePreview()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{ selectedImage?.name }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closePreview()">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        @if (selectedImage) {
+          <div class="preview-modal-content">
+            <img [src]="selectedImage.url" [alt]="selectedImage.name" />
+            <div class="preview-info">
+              <h4>{{ selectedImage.name }}</h4>
+              <p>Tamaño: {{ formatBytes(selectedImage.size) }} | Subida: {{ formatDate(selectedImage.createdAt) }}</p>
+              <div style="margin-top: 1rem;">
+                <a [href]="selectedImage.url" target="_blank" download>
+                  <ion-button fill="outline" color="primary" shape="round">
+                    <ion-icon slot="start" name="download-outline"></ion-icon>
+                    Descargar imagen original
+                  </ion-button>
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- TOAST FEEDBACK -->
+  <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="toastMessage"
+    duration="2500"
+    (didDismiss)="setToastOpen(false)">
+  </ion-toast>
+</ion-content>

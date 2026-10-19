@@ -1,0 +1,121 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Ionic Dark Mode with class toggle */
+@import "@ionic/angular/css/palettes/dark.class.css";
+
+:root {
+  --app-font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --ion-font-family: var(--app-font-family);
+
+  /* Modern primary indigo/blue accent */
+  --ion-color-primary: #4f46e5;
+  --ion-color-primary-rgb: 79, 70, 229;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #4338ca;
+  --ion-color-primary-tint: #6366f1;
+
+  /* Card and UI tokens for Light Mode */
+  --card-bg: #ffffff;
+  --card-border: rgba(226, 232, 240, 0.9);
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+  --hero-gradient: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(147, 51, 234, 0.08) 100%);
+  --badge-admin-bg: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --badge-user-bg: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --badge-anon-bg: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  --toolbar-bg: rgba(255, 255, 255, 0.85);
+  --page-bg: #f8fafc;
+}
+
+html.ion-palette-dark {
+  /* Card and UI tokens for Dark Mode */
+  --card-bg: #1e293b;
+  --card-border: rgba(51, 65, 85, 0.8);
+  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --hero-gradient: linear-gradient(135deg, rgba(79, 70, 229, 0.18) 0%, rgba(147, 51, 234, 0.18) 100%);
+  --toolbar-bg: rgba(15, 23, 42, 0.88);
+  --page-bg: #0f172a;
+}
+
+body {
+  font-family: var(--app-font-family);
+  background-color: var(--page-bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism Navigation Bar */
+ion-header ion-toolbar {
+  --background: var(--toolbar-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+}
+
+/* Premium Card Styles */
+.premium-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+/* Badge Pills */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.role-badge.admin {
+  background: var(--badge-admin-bg);
+}
+
+.role-badge.user {
+  background: var(--badge-user-bg);
+}
+
+.role-badge.guest {
+  background: var(--badge-anon-bg);
+}
+
+/* Nav segment buttons */
+.nav-segment {
+  max-width: 420px;
+  margin: 0 auto 1.5rem auto;
+  --background: rgba(148, 163, 184, 0.12);
+  border-radius: 12px;
+  padding: 4px;
+}

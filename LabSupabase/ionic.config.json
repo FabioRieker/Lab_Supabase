@@ -1,0 +1,7 @@
+{
+  "name": "LabSupabase",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

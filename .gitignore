@@ -1,0 +1,31 @@
+# Dependencies
+**/node_modules/
+**/.pnp
+**/.pnp.js
+
+# Build and cache outputs
+**/www/
+**/dist/
+**/out-tsc/
+**/.angular/
+**/.sourcemaps
+**/coverage/
+
+# Logs
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and IDE
+.DS_Store
+Thumbs.db
+.idea/
+.history/
+.vscode/*
+!.vscode/extensions.json
+
+# Ionic / Capacitor
+**/.ionic/
+**/platforms/
+**/plugins/
