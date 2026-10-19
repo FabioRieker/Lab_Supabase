@@ -118,15 +118,20 @@ export class SupabaseService {
   }
 
   async uploadStorageFile(bucketName: string, file: File): Promise<string> {
-    const fileExt = file.name.split('.').pop();
-    const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const fileName = `${Date.now()}_${sanitizedName}`;
+    const fileExt = file.name.split('.').pop() || 'png';
+    const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || 'image';
+    const sanitizedName = baseName.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const fileName = `${Date.now()}_${sanitizedName}.${fileExt}`;
 
     const { error } = await this.supabase.storage.from(bucketName).upload(fileName, file, {
       cacheControl: '3600',
-      upsert: false
+      upsert: true,
+      contentType: file.type || 'image/jpeg'
     });
-    if (error) throw error;
+    if (error) {
+      console.error('Error Supabase Storage Upload:', error);
+      throw error;
+    }
 
     const { data: { publicUrl } } = this.supabase.storage.from(bucketName).getPublicUrl(fileName);
     return publicUrl;

@@ -60,6 +60,7 @@ export class StoragePage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.supabaseService.initSession();
     await this.loadImages();
   }
 
